@@ -39,10 +39,18 @@ const Game = () => {
     setXIsNext(step % 2 === 0);
   };
   const moves = history.map((step, move) => {
-    const desc = move ? `Go to move # ${move}` : `Go to game start`;
+    const desc = move ? `Go to move # ${move}` : `Restart`;
+    let visibility = ""
+    if (move === 0)visibility = "visible";
+    else visibility = "hidden";
     return (
         <li key={move}>
-            <button onClick={() => jumpTo(move)}> {desc} </button>
+            <button 
+              className={visibility}
+              onClick={() => jumpTo(move)}
+            > 
+            {desc} 
+            </button>
         </li>
     );
   });
@@ -112,7 +120,7 @@ const Game = () => {
         </div>
         <div className="game-info">
             <div>{getWinner()}</div>
-            <ol>{moves}</ol>
+            <ul>{moves}</ul>
         </div>
     </div>
   )

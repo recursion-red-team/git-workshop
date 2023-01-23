@@ -19,6 +19,7 @@ body {
 
 ol, ul {
   padding-left: 30px;
+  list-style-type: none;
 }
 
 .board-row:after {
@@ -61,4 +62,12 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+}
+
+.visible{
+  visibility: visible;
+}
+
+.hidden{
+  visibility: hidden;
 }
