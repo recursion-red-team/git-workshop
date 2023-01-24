@@ -32,45 +32,71 @@ const Game = () => {
   };
 
   /**
-   * タイムトラベル
+   * タイムトラベルボタン
    */
   const jumpTo = (step) => {
+    if (step === 0){addHidden()};
     setPlayCount(step);
     setXIsNext(step % 2 === 0);
   };
+
   const moves = history.map((step, move) => {
-    const desc = move ? `Go to move # ${move}` : `Go to game start`;
+    const desc = move ? `Go to # ${move}` : `Restart`;
+    let visibility = "";
+    let restart = "";
+
+    if (move === 0){
+      restart = "restart";
+    }else visibility = "hidden";
+
     return (
-        <li key={move}>
-            <button onClick={() => jumpTo(move)}> {desc} </button>
-        </li>
+      <li key={move}
+        className={visibility}
+      >
+        <button 
+          id={restart}  
+          onClick={() => jumpTo(move)}
+        > 
+          {desc} 
+        </button>
+      </li>
     );
   });
 
-  const current = history[playCount];
+  /**
+   * 勝敗が決したのち、タイムトラベルボタンを表示
+   * Restartするとタイムトラベルボタンを非表示
+   */
+  const removeHidden = () => {
+    const buttonList = document.getElementById("buttonList");
+    const children = buttonList.children;
+    for (let i = 0; i < children.length; i++){
+      children[i].classList.remove('hidden');
+      console.log(children[i]);
+    };
+  };
+    
+  const addHidden = () => {
+    const buttonList = document.getElementById("buttonList");
+    const children = buttonList.children;
+    for (let i = 0; i < children.length; i++){
+      children[i].classList.add('hidden');
+      console.log(children[i]);
+    };
+  }
 
   /**
-   * 勝者/次のプレイヤーを表示
-   * @returns {string}
+   * 現在の盤面
    */
-   const getWinner = () => {
-    const winner = calculateWinner(current.squares);
-    if (winner) {
-      return "勝者: " + winner;
-    } else if (playCount === MAX_PLAY_COUNT) {
-      return "引き分けです";
-    } else {
-      return "次のプレイヤー: " + (xIsNext ? "X" : "O");
-    }
-   };
-
+  const current = history[playCount];
+  
   /**
    * 勝敗を計算する
    * @param {array} resultSquares
    * @returns {string|null}
-   */
-   const calculateWinner = (resultSquares) => {
-    const lines = [
+  */
+ const calculateWinner = (resultSquares) => {
+   const lines = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -80,39 +106,43 @@ const Game = () => {
       [0, 4, 8],
       [2, 4, 6],
     ];
-
+    
     for (let i = 0; i < lines.length; i++) {
      const [a, b, c] = lines[i];
      if (
        resultSquares[a] &&
        resultSquares[a] === resultSquares[b] &&
        resultSquares[a] === resultSquares[c]
-     ) {
-       return resultSquares[a];
-     }
+       ) {
+         return resultSquares[a];
+        }
     }
     return null;
-   };
-
-
-  //　全てを初期化する
-  //const resetAll = () => {
-  //  setHistory(
-  //      {
-  //          squares: Array(9).fill(null)
-  //      }
-  //  );
-  //  setXIsNext(true);
-  //};
-
+  };
+  
+  /**
+   * 勝者/次のプレイヤーを表示
+   * @returns {string}
+   */
+    const winner = calculateWinner(current.squares);
+    let result = "";
+    if (winner) {
+      removeHidden();
+      result = "勝者: " + winner;
+    } else if (playCount === MAX_PLAY_COUNT) {
+      result = "引き分けです";
+    } else {
+      result = "次のプレイヤー: " + (xIsNext ? "X" : "O");
+    };
+        
   return (
     <div className="game">
         <div className="game-board">
             <Board squares={current.squares} onClick={index => handleClick(index)} />
         </div>
         <div className="game-info">
-            <div>{getWinner()}</div>
-            <ol>{moves}</ol>
+            <div>{result}</div>
+            <ul id="buttonList">{moves}</ul>
         </div>
     </div>
   )
