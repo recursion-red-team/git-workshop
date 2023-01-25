@@ -71,3 +71,8 @@ ol, ul {
 .hidden{
   visibility: hidden;
 }
+
+.disabled {
+  pointer-events: none;
+  z-index: 100;
+}
