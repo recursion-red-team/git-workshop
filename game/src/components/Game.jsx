@@ -1,25 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Board from "./Board";
 import "./Game.css";
 
 const Game = () => {
   const [history, setHistory] = useState([
     {
-        squares: Array(9).fill(null)
-    }
+      squares: Array(9).fill(null),
+    },
   ]);
   const [xIsNext, setXIsNext] = useState(true);
+  const [moves, setMoves] = useState(true);
+  const [disabledClick, setDisabledClick] = useState(false);
   const [playCount, setPlayCount] = useState(0);
 
-  const MAX_PLAY_COUNT = 9;
+  const MAX_PLAY_COUNT = 5;
+
+  useEffect(() => {
+    const moves = history.map((step, move) => {
+      const desc = move ? `Go to move # ${move}` : `Restart`;
+      let visibility = "";
+      let restart = "";
+
+      if (move === 0){
+        restart = "restart";
+  }else visibility = "hidden";
+
+      const jumpTo = (step) => {
+        if (step === 0){addHidden()};
+        setPlayCount(step);
+        setXIsNext(step % 2 === 0);
+      };
+
+      return (
+        <li key={move}
+          className={visibility}
+        >
+          <button
+            onClick={() => jumpTo(move)}
+            id={restart}
+          >
+          {desc}
+          </button>
+        </li>
+      );
+    });
+    setMoves(moves);
+  }, [history]);
 
   /**
    * マス目クリック時
    * @param {int} index
    */
   const handleClick = (index) => {
-    const historyCurrent = history.slice(0, playCount +1);
-    const current = historyCurrent[historyCurrent.length -1];
+    setDisabledClick(true);
+
+    const historyCurrent = history.slice(0, playCount + 1);
+    const current = historyCurrent[historyCurrent.length - 1];
     const squares = current.squares.slice();
 
     if (calculateWinner(squares) || squares[index]) {
@@ -28,41 +64,17 @@ const Game = () => {
     squares[index] = xIsNext ? "X" : "O";
 
     setPlayCount(historyCurrent.length);
-    setHistory([...historyCurrent, {squares}]);
-    setXIsNext(!xIsNext);
+    setHistory([...historyCurrent, { squares }]);
+
+    setTimeout(() => {
+      cpuAction(squares);
+      setDisabledClick(false);
+    }, 1000);
   };
 
   /**
    * タイムトラベルボタン
    */
-  const jumpTo = (step) => {
-    if (step === 0){addHidden()};
-    setPlayCount(step);
-    setXIsNext(step % 2 === 0);
-  };
-
-  const moves = history?.map((step, move) => {
-    const desc = move ? `Go to # ${move}` : `Restart`;
-    let visibility = "";
-    let restart = "";
-
-    if (move === 0){
-      restart = "restart";
-    }else visibility = "hidden";
-
-    return (
-      <li key={move}
-        className={visibility}
-      >
-        <button
-          id={restart}
-          onClick={() => jumpTo(move)}
-        >
-          {desc}
-        </button>
-      </li>
-    );
-  });
 
   /**
    * 勝敗が決したのち、タイムトラベルボタンを表示
@@ -86,6 +98,28 @@ const Game = () => {
     };
   }
 
+  const cpuAction = (squares) => {
+    if (calculateWinner(squares)) return;
+    const currentHistory = history.slice(0, playCount + 2);
+
+    const possible_hands = [];
+    let hand = squares.indexOf(null);
+    while (hand !== -1) {
+      possible_hands.push(hand);
+      hand = squares.indexOf(null, hand + 1);
+    }
+
+    if (possible_hands.length === 0) return;
+
+    const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
+    const cpuStatus = !xIsNext;
+    squares[action_hand] = cpuStatus ? "X" : "O";
+    currentHistory[history.length - 1].squares = squares;
+
+    setHistory([...currentHistory, { squares }]);
+    setXIsNext(xIsNext);
+  };
+
   /**
    * 現在の盤面
    */
@@ -95,9 +129,9 @@ const Game = () => {
    * 勝敗を計算する
    * @param {array} resultSquares
    * @returns {string|null}
-  */
- const calculateWinner = (resultSquares) => {
-   const lines = [
+   */
+  const calculateWinner = (resultSquares) => {
+    const lines = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -139,7 +173,8 @@ const Game = () => {
   };
 
   return (
-    <div className="game">
+
+<div className={"game " + (disabledClick ? "disabled" : "")}>
       <div className="game-board">
         <Board
           winnerLines={winner}
@@ -152,7 +187,7 @@ const Game = () => {
           <ul id="buttonList">{moves}</ul>
       </div>
     </div>
-  )
+  );
 };
 
 export default Game;

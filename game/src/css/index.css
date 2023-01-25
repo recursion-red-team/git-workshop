@@ -46,8 +46,13 @@ code {
   visibility: hidden;
 }
 
+.disabled {
+  pointer-events: none;
+  z-index: 100;
+}
 .winner{
   background-color: rgb(249, 251, 133);
 }
+
 
 */

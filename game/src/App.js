@@ -1,4 +1,5 @@
 import Game from "./components/Game";
+import './css/index.css'
 import './App.css';
 
 function App() {
