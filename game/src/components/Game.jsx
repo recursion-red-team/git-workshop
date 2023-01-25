@@ -24,6 +24,12 @@ const Game = () => {
         restart = "restart";
       }else visibility = "hidden";
 
+      const jumpTo = (step) => {
+        if (step === 0){addHidden()};
+        setPlayCount(step);
+        setXIsNext(step % 2 === 0);
+      };
+
       return (
         <li key={move}
           className={visibility}
@@ -68,11 +74,6 @@ const Game = () => {
   /**
    * タイムトラベルボタン
    */
-  const jumpTo = (step) => {
-    if (step === 0){addHidden()};
-    setPlayCount(step);
-    setXIsNext(step % 2 === 0);
-  };
 
   /**
    * 勝敗が決したのち、タイムトラベルボタンを表示
@@ -147,7 +148,7 @@ const Game = () => {
        resultSquares[a] === resultSquares[b] &&
        resultSquares[a] === resultSquares[c]
        ) {
-         return resultSquares[a];
+         return [a, b ,c];
         }
     }
     return null;
@@ -157,28 +158,32 @@ const Game = () => {
    * 勝者/次のプレイヤーを表示
    * @returns {string}
    */
-    const winner = calculateWinner(current.squares);
-    let result = "";
-    if (winner) {
-      removeHidden();
-      result = "勝者: " + winner;
-    } else if (playCount === MAX_PLAY_COUNT) {
-      result = "引き分けです";
-    } else {
-      result = "次のプレイヤー: " + (xIsNext ? "X" : "O");
-    };
-        
+  const winner = calculateWinner(current.squares)
+  console.log(winner);
+  let result = "";
+  if (winner) {
+    removeHidden();
+    result = "勝者: " + current.squares[winner[0]];
+  } else if (playCount === MAX_PLAY_COUNT) {
+    removeHidden();
+    result = "引き分けです";
+  } else {
+    result = "次のプレイヤー: " + (xIsNext ? "X" : "O");
+  };
+     
   return (
-    <div className={"game " + (disabledClick ? "disabled" : "")}>
+
+<div className={"game " + (disabledClick ? "disabled" : "")}>
       <div className="game-board">
-        <Board
-          squares={current.squares}
-          onClick={(index) => handleClick(index)}
-          />
+        <Board 
+          winnerLines={winner} 
+          squares={current.squares} 
+          onClick={index => handleClick(index)} 
+        />
       </div>
       <div className="game-info">
-        <div>{result}</div>
-        <ul id="buttonList">{moves}</ul>
+          <div>{result}</div>
+          <ul id="buttonList">{moves}</ul>
       </div>
     </div>
   );

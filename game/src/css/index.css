@@ -76,3 +76,6 @@ ol, ul {
   pointer-events: none;
   z-index: 100;
 }
+.winner{
+  background-color: antiquewhite;
+}
