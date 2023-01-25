@@ -71,3 +71,7 @@ ol, ul {
 .hidden{
   visibility: hidden;
 }
+
+.winner{
+  background-color: antiquewhite;
+}

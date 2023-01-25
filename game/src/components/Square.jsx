@@ -1,10 +1,11 @@
 import React from "react";
 
-const Square = ({squareValue, onClick}) => {
-
-  return (
+const Square = ({winnerSquare, squareValue, onClick}) => {
+	console.log(winnerSquare);
+	let square = "square " + winnerSquare
+	return (
       <button
-				className="square"
+				className={square}
 				onClick={() => onClick()}
 				>
 				{squareValue}
