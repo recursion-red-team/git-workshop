@@ -1,40 +1,18 @@
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 
-ol, ul {
+/* ol, ul {
   padding-left: 30px;
   list-style-type: none;
-}
-
-/* .board-row:after {
-  clear: both;
-  content: "";
-  display: table;
 } */
 
+/*
 .status {
   margin-bottom: 10px;
 }
-
-/* .square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left; 崩れ防ぎ
-
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-} */
 
 .square:focus {
   outline: none;
@@ -42,18 +20,23 @@ ol, ul {
 
 .kbd-navigation .square:focus {
   background: #ddd;
-}
+} */
 
-.game {
+/* .game {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 /* .game-info {
   margin-left: 20px;
 } */
 
+
+
+
+/*
+  -- Game.cssに移動 --
 
 #restart{
   visibility: visible;
@@ -64,5 +47,7 @@ ol, ul {
 }
 
 .winner{
-  background-color: antiquewhite;
+  background-color: rgb(249, 251, 133);
 }
+
+*/

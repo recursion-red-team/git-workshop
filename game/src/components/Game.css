@@ -1,0 +1,11 @@
+#restart{
+  visibility: visible;
+}
+
+.hidden{
+  visibility: hidden;
+}
+
+.winner{
+  background-color: rgb(249, 251, 133);
+}
