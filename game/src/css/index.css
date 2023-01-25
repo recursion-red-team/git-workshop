@@ -62,3 +62,8 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+.disabled {
+  pointer-events: none;
+  z-index: 100;
+}
