@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Board from "./Board";
 
+
 const Game = () => {
   const [history, setHistory] = useState([
     {
@@ -25,7 +26,7 @@ const Game = () => {
       return;
     }
     squares[index] = xIsNext ? "X" : "O";
-    
+
     setPlayCount(historyCurrent.length);
     setHistory([...historyCurrent, {squares}]);
     setXIsNext(!xIsNext);
@@ -53,11 +54,11 @@ const Game = () => {
       <li key={move}
         className={visibility}
       >
-        <button 
-          id={restart}  
+        <button
+          id={restart}
           onClick={() => jumpTo(move)}
-        > 
-          {desc} 
+        >
+          {desc}
         </button>
       </li>
     );
@@ -75,7 +76,7 @@ const Game = () => {
       console.log(children[i]);
     };
   };
-    
+
   const addHidden = () => {
     const buttonList = document.getElementById("buttonList");
     const children = buttonList.children;
@@ -89,7 +90,7 @@ const Game = () => {
    * 現在の盤面
    */
   const current = history[playCount];
-  
+
   /**
    * 勝敗を計算する
    * @param {array} resultSquares
@@ -106,7 +107,7 @@ const Game = () => {
       [0, 4, 8],
       [2, 4, 6],
     ];
-    
+
     for (let i = 0; i < lines.length; i++) {
      const [a, b, c] = lines[i];
      if (
@@ -119,7 +120,7 @@ const Game = () => {
     }
     return null;
   };
-  
+
   /**
    * 勝者/次のプレイヤーを表示
    * @returns {string}
@@ -136,14 +137,14 @@ const Game = () => {
   } else {
     result = "次のプレイヤー: " + (xIsNext ? "X" : "O");
   };
-     
+
   return (
     <div className="game">
       <div className="game-board">
-        <Board 
-          winnerLines={winner} 
-          squares={current.squares} 
-          onClick={index => handleClick(index)} 
+        <Board
+          winnerLines={winner}
+          squares={current.squares}
+          onClick={index => handleClick(index)}
         />
       </div>
       <div className="game-info">
