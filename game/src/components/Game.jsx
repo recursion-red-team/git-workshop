@@ -170,6 +170,7 @@ console.log(winner);
 
   return (
 
+<<<<<<< HEAD
   <div className={"game " + (disabledClick ? "disabled" : "")}>
       <ScoreBoard
         result={result}
@@ -180,6 +181,20 @@ console.log(winner);
         squares={current.squares}
         onClick={index => handleClick(index)}
       />
+=======
+<div className={"game " + (disabledClick ? "disabled" : "")}>
+      <div className="game-board" id="board">
+        <Board
+          winnerLines={winner}
+          squares={current.squares}
+          onClick={index => handleClick(index)}
+        />
+      </div>
+      <div className="game-info">
+          <div>{result}</div>
+          <ul id="buttonList">{moves}</ul>
+      </div>
+>>>>>>> 6058a72 (タイムトラベル時、マス目クリック禁止)
     </div>
     <div className="game-info">
         <ul id="buttonList">{moves}</ul>
