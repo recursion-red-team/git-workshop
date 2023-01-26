@@ -12,10 +12,18 @@ const Game = () => {
   const [disabledClick, setDisabledClick] = useState(false);
   const [playCount, setPlayCount] = useState(0);
   const randomLocation = Math.floor(Math.random() * 9);
-  console.log("randomLocation is " + randomLocation)
   const [reverseLocation, setReverseLocation] = useState(randomLocation);
-
   const MAX_PLAY_COUNT = 5;
+  
+  const jumpTo = (step) => {
+    if (step === 0){
+      addHidden();
+      setReverseLocation(randomLocation);
+      console.log("randomLocation is " + reverseLocation)
+    };
+    setPlayCount(step);
+    setXIsNext(step % 2 === 0);
+  };
 
   const moves = history.map((step, move) => {
     const desc = move ? `Go to move # ${move}` : `Restart`;
@@ -25,15 +33,6 @@ const Game = () => {
     if (move === 0){
       restart = "restart";
     }else visibility = "hidden";
-
-    const jumpTo = (step) => {
-      if (step === 0){
-        addHidden();
-        setReverseLocation(randomLocation());
-      };
-      setPlayCount(step);
-      setXIsNext(step % 2 === 0);
-    };
 
     return (
       <li key={move}
