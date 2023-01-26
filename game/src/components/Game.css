@@ -1,0 +1,26 @@
+main{
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+li{
+  list-style-type: none;
+}
+
+#restart{
+  visibility: visible;
+}
+
+.hidden{
+  visibility: hidden;
+}
+
+.winner{
+  background-color: rgb(249, 251, 133);
+}
+
+.disabled {
+  pointer-events: none;
+  z-index: 100;
+}

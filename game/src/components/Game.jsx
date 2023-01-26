@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Board from "./Board";
+import "./Game.css";
 
 const Game = () => {
   const [history, setHistory] = useState([
@@ -169,6 +170,7 @@ const Game = () => {
 
 <div className={"game " + (disabledClick ? "disabled" : "")}>
       <div className="game-board" id="board">
+
         <Board
           winnerLines={winner}
           squares={current.squares}
@@ -176,7 +178,6 @@ const Game = () => {
         />
       </div>
       <div className="game-info">
-          <div>{result}</div>
           <ul id="buttonList">{moves}</ul>
       </div>
     </div>

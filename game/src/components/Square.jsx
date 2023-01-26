@@ -1,4 +1,5 @@
 import React from "react";
+import "./Square.css";
 
 const Square = ({winnerSquare, squareValue, onClick}) => {
 	console.log(winnerSquare);
