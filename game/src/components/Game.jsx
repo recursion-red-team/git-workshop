@@ -47,6 +47,22 @@ const Game = () => {
       </li>
     );
   });
+  
+
+  /** 
+   * reverse
+  */
+ const reverse = () => {
+    let squareClasses = document.querySelectorAll(".square")
+
+    const reversed = (e) => {
+      // 配列を反転させる。
+    };
+
+    squareClasses.forEach((target) => {
+      target.addEventListener('click', reversed, false);
+    })
+  };
 
   /**
    * マス目クリック時
@@ -54,7 +70,7 @@ const Game = () => {
    */
   const handleClick = (index) => {
     setDisabledClick(true);
-
+    reverse();
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     const squares = current.squares.slice();
@@ -62,7 +78,7 @@ const Game = () => {
     if (calculateWinner(squares) || squares[index]) {
       return;
     }
-    squares[index] = xIsNext ? "X" : "O";
+    squares[index] = xIsNext ? true : false;
 
     setPlayCount(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
@@ -114,7 +130,7 @@ const Game = () => {
 
     const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
     const cpuStatus = !xIsNext;
-    squares[action_hand] = cpuStatus ? "X" : "O";
+    squares[action_hand] = cpuStatus ? true : false;
 
     setHistory([...currentHistory, { squares }]);
     setXIsNext(xIsNext);
@@ -164,7 +180,8 @@ const Game = () => {
   let result = "";
   if (winner) {
     removeHidden();
-    result = "勝者: " + current.squares[winner[0]];
+    const winnerStatus = current.squares[winner[0]] ? "X" : "O"
+    result = "勝者: " + winnerStatus;
   } else if (playCount === MAX_PLAY_COUNT) {
     removeHidden();
     result = "引き分けです";
