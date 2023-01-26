@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Board from "./Board";
 
 const Game = () => {
@@ -8,43 +8,39 @@ const Game = () => {
     },
   ]);
   const [xIsNext, setXIsNext] = useState(true);
-  const [moves, setMoves] = useState(true);
   const [disabledClick, setDisabledClick] = useState(false);
   const [playCount, setPlayCount] = useState(0);
 
   const MAX_PLAY_COUNT = 5;
 
-  useEffect(() => {
-    const moves = history.map((step, move) => {
-      const desc = move ? `Go to move # ${move}` : `Restart`;
-      let visibility = "";
-      let restart = "";
+  const moves = history.map((step, move) => {
+    const desc = move ? `Go to move # ${move}` : `Restart`;
+    let visibility = "";
+    let restart = "";
 
-      if (move === 0){
-        restart = "restart";
-      }else visibility = "hidden";
+    if (move === 0){
+      restart = "restart";
+    }else visibility = "hidden";
 
-      const jumpTo = (step) => {
-        if (step === 0){addHidden()};
-        setPlayCount(step);
-        setXIsNext(step % 2 === 0);
-      };
+    const jumpTo = (step) => {
+      if (step === 0){addHidden()};
+      setPlayCount(step);
+      setXIsNext(step % 2 === 0);
+    };
 
-      return (
-        <li key={move}
-          className={visibility}
-        >
-          <button 
-            onClick={() => jumpTo(move)}
-            id={restart}
-          > 
-          {desc} 
-          </button>
-        </li>
-      );
-    });
-    setMoves(moves);
-  }, [history]);
+    return (
+      <li key={move}
+        className={visibility}
+      >
+        <button 
+          onClick={() => jumpTo(move)}
+          id={restart}
+        > 
+        {desc} 
+        </button>
+      </li>
+    );
+  });
 
   /**
    * マス目クリック時
@@ -99,7 +95,7 @@ const Game = () => {
 
   const cpuAction = (squares) => {
     if (calculateWinner(squares)) return;
-    const currentHistory = history.slice(0, playCount + 2);
+    const currentHistory = history.slice(0, playCount + 1);
 
     const possible_hands = [];
     let hand = squares.indexOf(null);
@@ -113,7 +109,6 @@ const Game = () => {
     const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
     const cpuStatus = !xIsNext;
     squares[action_hand] = cpuStatus ? "X" : "O";
-    currentHistory[history.length - 1].squares = squares;
 
     setHistory([...currentHistory, { squares }]);
     setXIsNext(xIsNext);
