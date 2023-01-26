@@ -159,12 +159,12 @@ console.log(winner);
   let result = "";
   if (winner) {
     removeHidden();
-    result = "勝者: " + current.squares[winner[0]];
+    result = "WINNER: " + current.squares[winner[0]];
   } else if (playCount === MAX_PLAY_COUNT) {
     removeHidden();
-    result = "引き分けです";
+    result = "DRAW";
   } else {
-    result = "次のプレイヤー: " + (xIsNext ? "X" : "O");
+    result = "NEXT PLAYER: " + (xIsNext ? "X" : "O");
   };
 
   return (

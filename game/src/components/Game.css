@@ -11,9 +11,8 @@ main{
 /* game-info
   ----------------- */
 .game-info{
-  background-color: rgba(146, 151, 149, 0.3);
+  /* background-color: rgba(146, 151, 149, 0.3); */
   align-items: center;
-  margin-top: 2rem;
   padding: 1rem;
   border-radius: 0.5rem;
 }
@@ -29,7 +28,7 @@ li{
 
 #buttonList{
   display: grid;
-  grid-template-columns: 9rem 1fr 1fr 1fr 1fr 1fr;
+  /* grid-template-columns: 9rem 1fr 1fr 1fr 1fr 1fr; */
 }
 
 #buttonList li{
@@ -47,7 +46,7 @@ li{
 #buttonList li button{
   color: rgb(1, 1, 1);
   background-color: aliceblue;
-  padding: 3px;
+  padding: 2px;
   border: 2px solid black;
   border-radius: 20px;
 }
