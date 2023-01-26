@@ -1,5 +1,6 @@
 import React from "react";
 import Square from "./Square";
+import "./Board.css";
 
 const Board = ({ winnerLines, squares, onClick}) => {
   /**
@@ -15,7 +16,7 @@ const Board = ({ winnerLines, squares, onClick}) => {
         if (index === winnerLines[i]) winnerSquare = "winner";
       };
     }
-    
+
     return (
       <Square
         winnerSquare={winnerSquare}
