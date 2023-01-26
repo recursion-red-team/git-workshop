@@ -68,15 +68,13 @@ const Game = () => {
     }, 1000);
   };
 
-  /**
-   * タイムトラベルボタン
-   */
-
+  const board = document.getElementById("board");
   /**
    * 勝敗が決したのち、タイムトラベルボタンを表示
    * Restartするとタイムトラベルボタンを非表示
    */
   const removeHidden = () => {
+    board.classList.add('disabled');
     const buttonList = document.getElementById("buttonList");
     const children = buttonList.children;
     for (let i = 0; i < children.length; i++){
@@ -86,6 +84,7 @@ const Game = () => {
   };
 
   const addHidden = () => {
+    board.classList.remove('disabled');
     const buttonList = document.getElementById("buttonList");
     const children = buttonList.children;
     for (let i = 0; i < children.length; i++){
@@ -170,8 +169,8 @@ const Game = () => {
   return (
 
 <div className={"game " + (disabledClick ? "disabled" : "")}>
-      <div className="game-board">
-        <div className="display">{result}</div>
+      <div className="game-board" id="board">
+
         <Board
           winnerLines={winner}
           squares={current.squares}
