@@ -48,17 +48,15 @@ const Game = () => {
     );
   });
   
+  const reversed = (e) => {
+   console.log(e.target.id);
+  };
 
   /** 
-   * reverse
+   * squareがクリックされたらreversed実行
   */
  const reverse = () => {
     let squareClasses = document.querySelectorAll(".square")
-
-    const reversed = (e) => {
-      // 配列を反転させる。
-    };
-
     squareClasses.forEach((target) => {
       target.addEventListener('click', reversed, false);
     })
