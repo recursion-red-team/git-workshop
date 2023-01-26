@@ -11,6 +11,9 @@ const Game = () => {
   const [xIsNext, setXIsNext] = useState(true);
   const [disabledClick, setDisabledClick] = useState(false);
   const [playCount, setPlayCount] = useState(0);
+  const randomLocation = Math.floor(Math.random() * 9);
+  console.log("randomLocation is " + randomLocation)
+  const [reverseLocation, setReverseLocation] = useState(randomLocation);
 
   const MAX_PLAY_COUNT = 5;
 
@@ -24,7 +27,10 @@ const Game = () => {
     }else visibility = "hidden";
 
     const jumpTo = (step) => {
-      if (step === 0){addHidden()};
+      if (step === 0){
+        addHidden();
+        setReverseLocation(randomLocation());
+      };
       setPlayCount(step);
       setXIsNext(step % 2 === 0);
     };
@@ -174,6 +180,7 @@ const Game = () => {
         <div className="display">{result}</div>
         <Board
           winnerLines={winner}
+          itemLocation={reverseLocation}
           squares={current.squares}
           onClick={index => handleClick(index)}
         />
