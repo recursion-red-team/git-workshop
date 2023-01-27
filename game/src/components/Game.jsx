@@ -170,7 +170,7 @@ const Game = () => {
 
 <div className={"game " + (disabledClick ? "disabled" : "")}>
       <div className="game-board" id="board">
-
+        <div className="display">{result}</div>
         <Board
           winnerLines={winner}
           squares={current.squares}
