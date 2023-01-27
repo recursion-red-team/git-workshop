@@ -2,7 +2,7 @@ import React from "react";
 import Square from "./Square";
 import "./Board.css";
 
-const Board = ({ winnerLines, squares, onClick}) => {
+const Board = ({ itemLocation, winnerLines, squares, onClick}) => {
   /**
    * マス目を表示する
    * @param {int} index
@@ -17,10 +17,21 @@ const Board = ({ winnerLines, squares, onClick}) => {
       };
     }
 
+    const squareValue = squares.map((value) => {
+      if (value === null) return null;
+      else if (value) return "X";
+      else return "O";
+    });
+    console.log(squareValue);
+
+    let reverseValue = ""
+    if (index === itemLocation) reverseValue = "reverse"
+
     return (
       <Square
         winnerSquare={winnerSquare}
-        squareValue={squares[index]}
+        item={reverseValue}
+        squareValue={squareValue[index]}
         onClick={() => onClick(index)}
       />
     );
