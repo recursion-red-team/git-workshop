@@ -48,27 +48,21 @@ const Game = () => {
     );
   });
   
-  const reversed = (e) => {
-   console.log(e.target.id);
-  };
-
-  /** 
-   * squareがクリックされたらreversed実行
-  */
- const reverse = () => {
-    let squareClasses = document.querySelectorAll(".square")
-    squareClasses.forEach((target) => {
-      target.addEventListener('click', reversed, false);
-    })
-  };
-
   /**
    * マス目クリック時
    * @param {int} index
    */
   const handleClick = (index) => {
+    if (index === reverseLocation){
+      reverse();
+      playerClickAction(index);
+    } else {
+      playerClickAction(index);
+    }
+  };
+  
+  const playerClickAction = (index) => {
     setDisabledClick(true);
-    reverse();
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     const squares = current.squares.slice();
@@ -77,31 +71,50 @@ const Game = () => {
       return;
     }
     squares[index] = xIsNext ? true : false;
-
+    
     setPlayCount(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
-
+    
     setTimeout(() => {
       cpuAction(squares);
       setDisabledClick(false);
     }, 1000);
   };
-
+  
+  const reverse = () => {
+    const historyCurrent = history.slice(0, playCount + 1);
+    const current = historyCurrent[historyCurrent.length - 1];
+    const squares = current.squares.slice();
+    playerClickAction();
+    let reversedSquares = squares;
+    
+    console.log(squares);
+    reversedSquares = squares.map((value) => {
+      if (value === null) {
+        return value
+      } else {
+        return !value
+      }
+    });
+    console.log("reversed!");
+    console.log(reversedSquares);
+  };  
+  
   const board = document.getElementById("board");
   /**
    * 勝敗が決したのち、タイムトラベルボタンを表示
    * Restartするとタイムトラベルボタンを非表示
-   */
-  const removeHidden = () => {
-    board.classList.add('disabled');
-    const buttonList = document.getElementById("buttonList");
-    const children = buttonList.children;
-    for (let i = 0; i < children.length; i++){
+  */
+ const removeHidden = () => {
+   board.classList.add('disabled');
+   const buttonList = document.getElementById("buttonList");
+   const children = buttonList.children;
+   for (let i = 0; i < children.length; i++){
       children[i].classList.remove('hidden');
       console.log(children[i]);
     };
   };
-
+  
   const addHidden = () => {
     board.classList.remove('disabled');
     const buttonList = document.getElementById("buttonList");
@@ -111,11 +124,11 @@ const Game = () => {
       console.log(children[i]);
     };
   }
-
+  
   const cpuAction = (squares) => {
     if (calculateWinner(squares)) return;
     const currentHistory = history.slice(0, playCount + 1);
-
+    
     const possible_hands = [];
     let hand = squares.indexOf(null);
     while (hand !== -1) {
@@ -128,6 +141,9 @@ const Game = () => {
     const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
     const cpuStatus = !xIsNext;
     squares[action_hand] = cpuStatus ? true : false;
+    if (action_hand === reverseLocation){
+      reverse();
+    };
 
     setHistory([...currentHistory, { squares }]);
     setXIsNext(xIsNext);

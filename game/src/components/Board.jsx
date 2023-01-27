@@ -22,7 +22,6 @@ const Board = ({ itemLocation, winnerLines, squares, onClick}) => {
       else if (value) return "X";
       else return "O";
     });
-    console.log(squareValue);
 
     let reverseValue = ""
     if (index === itemLocation) reverseValue = "reverse"
