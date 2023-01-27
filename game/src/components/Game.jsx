@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Board from "./Board";
 import "./Game.css";
 import { ScoreBoard } from "./ScoreBoard";
-import { ScoreBoard } from "./ScoreBoard";
 
 const Game = () => {
   const [history, setHistory] = useState([

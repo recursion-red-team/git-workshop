@@ -1,16 +1,6 @@
 /* game-info
   ----------------- */
-.game-info{
-  background-color: rgba(146, 151, 149, 0.3);
-  align-items: center;
-  margin-top: 2rem;
-  padding: 1rem;
-  border-radius: 0.5rem;
-}
 
-ul{
-  display: flex;
-}
 
 #buttonList{
   display: grid;
@@ -20,14 +10,14 @@ ul{
 #buttonList #restart{
   font-size: 1.8rem;
   border-radius: 30px;
-  padding: 5px 10px;
+  padding: 5px 20px;
 }
 
 #buttonList button{
   list-style-type: none;
   background-color: #ffffff;
   padding: 5px 10px;
-  margin: 7px 0;
+  margin: 2px 0;
   border-radius: 30px;
 }
 
@@ -35,7 +25,7 @@ ul{
   color: #ffffff;
   background-color: blue;
   border: 2px solid #ffffff;
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 #buttonList li{
@@ -45,7 +35,7 @@ ul{
 
 #buttonList{
   display: grid;
-  grid-template-columns: 9rem 1fr 1fr 1fr 1fr 1fr;
+  /* grid-template-columns: 9rem 1fr 1fr 1fr 1fr 1fr; */
 }
 
 #buttonList li{
@@ -56,13 +46,13 @@ ul{
 #restart{
   visibility: visible;
   font-size: 1.8rem;
-  background: whitesmoke;
+  background: #ffffff;
   border-radius: 5px;
 }
 
 #buttonList li button{
   color: rgb(1, 1, 1);
-  background-color: aliceblue;
+  background-color: #ffffff;
   padding: 3px;
   border: 2px solid black;
   border-radius: 20px;
