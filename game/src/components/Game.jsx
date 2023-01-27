@@ -99,6 +99,8 @@ const Game = () => {
         return "X"
       }
     });
+    // setPlayCount(historyCurrent.length);
+    // setHistory([...historyCurrent, { reversedSquares }]);
     console.log("reversed!");
     console.log(reversedSquares);
   };  
