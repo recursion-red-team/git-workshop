@@ -1,5 +1,6 @@
 .board-row{
   display: grid;
+<<<<<<< HEAD
   gap: 26px;
   width: 500px;
   grid-template-columns: 1fr 1fr 1fr;
@@ -8,4 +9,7 @@
 
 .item{
   margin: 0 auto;
+=======
+  grid-template-columns: repeat(3, 6rem);
+>>>>>>> 729f0d5 (コンポーネント毎にCSSを追加)
 }

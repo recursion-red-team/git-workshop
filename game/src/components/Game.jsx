@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Board from "./Board";
 import "./Game.css";
+<<<<<<< HEAD
 import { ScoreBoard } from "./ScoreBoard";
+=======
+>>>>>>> 729f0d5 (コンポーネント毎にCSSを追加)
 
 const Game = () => {
   const [history, setHistory] = useState([
@@ -169,6 +172,7 @@ console.log(winner);
 
   return (
 
+<<<<<<< HEAD
   <div className={"game " + (disabledClick ? "disabled" : "")}>
       <ScoreBoard
         result={result}
@@ -179,6 +183,20 @@ console.log(winner);
         squares={current.squares}
         onClick={index => handleClick(index)}
       />
+=======
+<div className={"game " + (disabledClick ? "disabled" : "")}>
+      <div className="game-board">
+        <div className="display">{result}</div>
+        <Board
+          winnerLines={winner}
+          squares={current.squares}
+          onClick={index => handleClick(index)}
+        />
+      </div>
+      <div className="game-info">
+          <ul id="buttonList">{moves}</ul>
+      </div>
+>>>>>>> 729f0d5 (コンポーネント毎にCSSを追加)
     </div>
     <div className="game-info">
         <ul id="buttonList">{moves}</ul>
