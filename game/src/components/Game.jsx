@@ -54,8 +54,8 @@ const Game = () => {
    */
   const handleClick = (index) => {
     if (index === reverseLocation){
-      reverse();
       playerClickAction(index);
+      reverse();
     } else {
       playerClickAction(index);
     }
@@ -66,14 +66,16 @@ const Game = () => {
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     const squares = current.squares.slice();
-
+    
     if (calculateWinner(squares) || squares[index]) {
+      setDisabledClick(false);
       return;
     }
-    squares[index] = xIsNext ? true : false;
+    squares[index] = xIsNext ? "X" : "O";
     
     setPlayCount(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
+    setXIsNext(!xIsNext);
     
     setTimeout(() => {
       cpuAction(squares);
@@ -85,15 +87,16 @@ const Game = () => {
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     const squares = current.squares.slice();
-    playerClickAction();
     let reversedSquares = squares;
     
     console.log(squares);
     reversedSquares = squares.map((value) => {
       if (value === null) {
         return value
+      } else if (value === "X"){
+        return value = "O"
       } else {
-        return !value
+        return "X"
       }
     });
     console.log("reversed!");
@@ -140,13 +143,13 @@ const Game = () => {
 
     const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
     const cpuStatus = !xIsNext;
-    squares[action_hand] = cpuStatus ? true : false;
+    squares[action_hand] = cpuStatus ? "X" : "O";
+    
+    setHistory([...currentHistory, { squares }]);
+    setXIsNext(xIsNext);
     if (action_hand === reverseLocation){
       reverse();
     };
-
-    setHistory([...currentHistory, { squares }]);
-    setXIsNext(xIsNext);
   };
 
   /**
@@ -193,7 +196,7 @@ const Game = () => {
   let result = "";
   if (winner) {
     removeHidden();
-    const winnerStatus = current.squares[winner[0]] ? "X" : "O"
+    const winnerStatus = current.squares[winner[0]]
     result = "勝者: " + winnerStatus;
   } else if (playCount === MAX_PLAY_COUNT) {
     removeHidden();

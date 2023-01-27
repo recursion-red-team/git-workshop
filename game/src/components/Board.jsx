@@ -17,12 +17,6 @@ const Board = ({ itemLocation, winnerLines, squares, onClick}) => {
       };
     }
 
-    const squareValue = squares.map((value) => {
-      if (value === null) return null;
-      else if (value) return "X";
-      else return "O";
-    });
-
     let reverseValue = ""
     if (index === itemLocation) reverseValue = "reverse"
 
@@ -30,7 +24,7 @@ const Board = ({ itemLocation, winnerLines, squares, onClick}) => {
       <Square
         winnerSquare={winnerSquare}
         item={reverseValue}
-        squareValue={squareValue[index]}
+        squareValue={squares[index]}
         onClick={() => onClick(index)}
       />
     );
