@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Board from "./Board";
 import "./Game.css";
+import { ScoreBoard } from "./ScoreBoard";
 
 const Game = () => {
   const [history, setHistory] = useState([
@@ -154,7 +155,7 @@ const Game = () => {
    * @returns {string}
    */
   const winner = calculateWinner(current.squares)
-  console.log(winner);
+console.log(winner);
   let result = "";
   if (winner) {
     removeHidden();
@@ -168,18 +169,21 @@ const Game = () => {
 
   return (
 
-<div className={"game " + (disabledClick ? "disabled" : "")}>
-      <div className="game-board">
-        <Board
-          winnerLines={winner}
-          squares={current.squares}
-          onClick={index => handleClick(index)}
-        />
-      </div>
-      <div className="game-info">
-          <ul id="buttonList">{moves}</ul>
-      </div>
+  <div className={"game " + (disabledClick ? "disabled" : "")}>
+      <ScoreBoard
+        result={result}
+      />
+        <div className="game-board" id="board">
+      <Board
+        winnerLines={winner}
+        squares={current.squares}
+        onClick={index => handleClick(index)}
+      />
     </div>
+    <div className="game-info">
+        <ul id="buttonList">{moves}</ul>
+    </div>
+  </div>
   );
 };
 

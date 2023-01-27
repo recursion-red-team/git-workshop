@@ -29,19 +29,33 @@ const Board = ({ winnerLines, squares, onClick}) => {
   return (
     <>
       <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
+        <div className="item">
+          {renderSquare(0)}
+        </div>
+        <div className="item">
+          {renderSquare(1)}
+        </div>
+        <div className="item">
+          {renderSquare(2)}
+        </div>
+        <div className="item">
+          {renderSquare(3)}
+        </div>
+        <div className="item">
+          {renderSquare(4)}
+        </div>
+        <div className="item">
+          {renderSquare(5)}
+        </div>
+        <div className="item">
+          {renderSquare(6)}
+        </div>
+        <div className="item">
+          {renderSquare(7)}
+        </div>
+        <div className="item">
+          {renderSquare(8)}
+        </div>
       </div>
     </>
   );
