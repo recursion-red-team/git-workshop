@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import Board from "./Board";
 import "./Game.css";
-<<<<<<< HEAD
 import { ScoreBoard } from "./ScoreBoard";
-=======
->>>>>>> 729f0d5 (コンポーネント毎にCSSを追加)
 
 const Game = () => {
   const [history, setHistory] = useState([
@@ -59,6 +56,7 @@ const Game = () => {
     const squares = current.squares.slice();
 
     if (calculateWinner(squares) || squares[index]) {
+      setDisabledClick(false);
       return;
     }
     squares[index] = xIsNext ? "X" : "O";
@@ -162,7 +160,7 @@ console.log(winner);
   let result = "";
   if (winner) {
     removeHidden();
-    result = "WINNER: " + current.squares[winner[0]];
+    result = "Winner: " + current.squares[winner[0]];
   } else if (playCount === MAX_PLAY_COUNT) {
     removeHidden();
     result = "DRAW";
@@ -172,7 +170,6 @@ console.log(winner);
 
   return (
 
-<<<<<<< HEAD
   <div className={"game " + (disabledClick ? "disabled" : "")}>
       <ScoreBoard
         result={result}
@@ -183,20 +180,6 @@ console.log(winner);
         squares={current.squares}
         onClick={index => handleClick(index)}
       />
-=======
-<div className={"game " + (disabledClick ? "disabled" : "")}>
-      <div className="game-board">
-        <div className="display">{result}</div>
-        <Board
-          winnerLines={winner}
-          squares={current.squares}
-          onClick={index => handleClick(index)}
-        />
-      </div>
-      <div className="game-info">
-          <ul id="buttonList">{moves}</ul>
-      </div>
->>>>>>> 729f0d5 (コンポーネント毎にCSSを追加)
     </div>
     <div className="game-info">
         <ul id="buttonList">{moves}</ul>

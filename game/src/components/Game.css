@@ -1,0 +1,58 @@
+/* game-board
+  ----------------------- */
+
+
+
+/* game-info
+  ---------------------- */
+
+.game-info{
+  margin-top: 2rem;
+}
+
+#buttonList{
+  display: grid;
+  text-align: center;
+}
+
+#buttonList #restart{
+  font-size: 1.8rem;
+  border-radius: 30px;
+  padding: 5px 10px;
+}
+
+#buttonList button{
+  list-style-type: none;
+  background-color: #ffffff;
+  padding: 5px 10px;
+  margin: 7px 0;
+  border-radius: 30px;
+}
+
+#buttonList button:hover{
+  color: #ffffff;
+  background-color: blue;
+  border: 2px solid #ffffff;
+  transform: scale(1.1);
+}
+
+#buttonList li{
+  list-style-type: none;
+}
+
+#restart{
+  visibility: visible;
+}
+
+.hidden{
+  visibility: hidden;
+}
+
+.winner{
+  background-color: rgb(249, 251, 133);
+}
+
+.disabled {
+  pointer-events: none;
+  z-index: 100;
+}

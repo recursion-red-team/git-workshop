@@ -1,11 +1,7 @@
 .scoreboard{
-  /* display: flex; */
-  /* flex-direction: row; */
-  /* align-items: center; */
-  /* justify-content: space-between; */
   width: 20rem;
   font-size: 1.5em;
-  background-color: antiquewhite;
+  background-color: #ffffff;
   padding: 1rem;
   margin: 3rem auto;
   box-shadow: 0 0 10px rgb(195, 191, 191);
