@@ -62,6 +62,7 @@ const Game = () => {
   };
   
   const playerClickAction = (index) => {
+    console.log("playerAction");
     setDisabledClick(true);
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
@@ -84,13 +85,13 @@ const Game = () => {
   };
   
   const reverse = () => {
+    console.log("reverseAction");
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
-    const squares = current.squares.slice();
-    let reversedSquares = squares;
+    let squares = current.squares.slice();
     
     console.log(squares);
-    reversedSquares = squares.map((value) => {
+    squares = squares.map((value) => {
       if (value === null) {
         return value
       } else if (value === "X"){
@@ -99,10 +100,11 @@ const Game = () => {
         return "X"
       }
     });
-    // setPlayCount(historyCurrent.length);
-    // setHistory([...historyCurrent, { reversedSquares }]);
+    setPlayCount(historyCurrent.length);
+    console.log(playCount);
+    setHistory([...historyCurrent, { squares }]);
     console.log("reversed!");
-    console.log(reversedSquares);
+    console.log(squares);
   };  
   
   const board = document.getElementById("board");
