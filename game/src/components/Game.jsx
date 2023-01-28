@@ -20,6 +20,7 @@ const Game = () => {
     if (step === 0){
       addHidden();
       setReverseLocation(randomLocation);
+      setXIsNext(true);
       console.log("randomLocation is " + reverseLocation)
     };
     setPlayCount(step);
