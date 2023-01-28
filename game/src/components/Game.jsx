@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Board from "./Board";
 import "./Game.css";
+import { ScoreBoard } from "./ScoreBoard";
 
 const Game = () => {
   const [history, setHistory] = useState([
@@ -12,10 +13,11 @@ const Game = () => {
   const [disabledClick, setDisabledClick] = useState(false);
   const [playCount, setPlayCount] = useState(0);
 
+
   const MAX_PLAY_COUNT = 5;
 
   const moves = history.map((step, move) => {
-    const desc = move ? `Go to move # ${move}` : `Restart`;
+    const desc = move ? `Time Travel ${move}` : `Restart`;
     let visibility = "";
     let restart = "";
 
@@ -62,6 +64,7 @@ const Game = () => {
 
     setPlayCount(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
+    setXIsNext(!xIsNext);
 
     setTimeout(() => {
       cpuAction(squares);
@@ -146,42 +149,47 @@ const Game = () => {
        ) {
          return [a, b ,c];
         }
-    }
-    return null;
-  };
+      }
+      return null;
+    };
+
 
   /**
    * 勝者/次のプレイヤーを表示
    * @returns {string}
    */
   const winner = calculateWinner(current.squares)
-  console.log(winner);
   let result = "";
   if (winner) {
     removeHidden();
-    result = "勝者: " + current.squares[winner[0]];
+    result = "Winner: " + current.squares[winner[0]];
+    console.log("winner内のTRUEなら、resultのチェック ====>>>> " + result)
   } else if (playCount === MAX_PLAY_COUNT) {
     removeHidden();
-    result = "引き分けです";
+    result = "DRAW";
   } else {
-    result = "次のプレイヤー: " + (xIsNext ? "X" : "O");
+    console.log("X IS NEXT : " + xIsNext)
+    result = "NEXT PLAYER: " + (xIsNext ? "X" : "O");
   };
 
   return (
 
-<div className={"game " + (disabledClick ? "disabled" : "")}>
-      <div className="game-board" id="board">
-        <div className="display">{result}</div>
-        <Board
-          winnerLines={winner}
-          squares={current.squares}
-          onClick={index => handleClick(index)}
-        />
-      </div>
-      <div className="game-info">
-          <ul id="buttonList">{moves}</ul>
-      </div>
+  <div className={"game " + (disabledClick ? "disabled" : "")}>
+      <ScoreBoard
+        result={result}
+      />
+        <div className="game-board" id="board">
+      <Board
+        winnerLines={winner}
+        squares={current.squares}
+        onClick={index => handleClick(index)}
+      />
+
     </div>
+    <div className="game-info">
+        <ul id="buttonList" style={{ padding: 0 }}>{moves}</ul>
+    </div>
+  </div>
   );
 };
 

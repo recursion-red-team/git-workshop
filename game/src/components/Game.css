@@ -1,15 +1,69 @@
-main{
-  display: flex;
-  justify-content: center;
-  margin-top: 10%;
+/* game-info
+  ----------------- */
+
+
+#buttonList{
+  display: grid;
+  text-align: center;
 }
 
-li{
+#buttonList #restart{
+  font-size: 1.8rem;
+  border-radius: 30px;
+  padding: 5px 20px;
+}
+
+#buttonList button{
   list-style-type: none;
+  background-color: #ffffff;
+  padding: 5px 10px;
+  margin: 2px 0;
+  border-radius: 30px;
+}
+
+#buttonList button:hover{
+  color: #ffffff;
+  background-color: blue;
+  border: 2px solid #ffffff;
+  transform: scale(1.2);
+}
+
+#buttonList li{
+  list-style-type: none;
+  padding: 2px;
+}
+
+#buttonList{
+  display: grid;
+  /* grid-template-columns: 9rem 1fr 1fr 1fr 1fr 1fr; */
+}
+
+#buttonList li{
+  text-align: center;
+  margin-top: 10px;
 }
 
 #restart{
   visibility: visible;
+  font-size: 1.8rem;
+  background: #ffffff;
+  border-radius: 5px;
+}
+
+#buttonList li button{
+  color: rgb(1, 1, 1);
+  background-color: #ffffff;
+  padding: 6px;
+  border: 2px solid black;
+  border-radius: 20px;
+}
+
+
+#buttonList button:hover{
+  background-color: rgb(32, 12, 183);
+  color: aliceblue;
+  transform: scale(1.1);
+  border: 1px solid rgb(219, 216, 212);
 }
 
 .hidden{

@@ -1,0 +1,16 @@
+.scoreboard{
+  width: 20rem;
+  font-size: 1.5em;
+  background-color: #ffffff;
+  padding: 1rem;
+  margin: 3rem auto;
+  box-shadow: 0 0 10px rgb(195, 191, 191);
+  border-radius: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+.totalScore{
+  text-align: center;
+}

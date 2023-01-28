@@ -1,4 +1,12 @@
 .board-row{
   display: grid;
+  gap: 26px;
+  width: 500px;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0 auto;
+}
+
+.item{
+  margin: 0 auto;
   grid-template-columns: repeat(3, 6rem);
 }
