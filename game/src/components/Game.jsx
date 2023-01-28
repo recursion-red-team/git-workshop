@@ -187,7 +187,7 @@ const Game = () => {
 
     </div>
     <div className="game-info">
-        <ul id="buttonList">{moves}</ul>
+        <ul id="buttonList" style={{ padding: 0 }}>{moves}</ul>
     </div>
   </div>
   );
