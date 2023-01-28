@@ -64,6 +64,7 @@ const Game = () => {
 
     setPlayCount(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
+    setXIsNext(!xIsNext);
 
     setTimeout(() => {
       cpuAction(squares);
@@ -158,7 +159,6 @@ const Game = () => {
    * @returns {string}
    */
   const winner = calculateWinner(current.squares)
-  console.log("勝者: " + winner);
   let result = "";
   if (winner) {
     removeHidden();
@@ -176,8 +176,7 @@ const Game = () => {
 
   <div className={"game " + (disabledClick ? "disabled" : "")}>
       <ScoreBoard
-        result={result} // "NEXT PLAYER: X or Winner: X"
-        winner={winner} // null || winner時にintの配列[1, 4, 7]
+        result={result}
       />
         <div className="game-board" id="board">
       <Board

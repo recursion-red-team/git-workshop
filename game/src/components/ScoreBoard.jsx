@@ -1,31 +1,37 @@
 import React from 'react';
 import "./ScoreBoard.css";
-import { useState } from "react";
+// import { useState } from "react";
 
-export const ScoreBoard = ({ result , winner }) => {
-  // result == "NEXT PLAYER: X or Winner: X"
-  // これから winner == "X or O"; 勝ちパターンが引数[1,4,7] or null
+export const ScoreBoard = ({ result }) => {
+
+
+  // Gameコンポーネントからpropsでwinneを引数として受け取り、r勝者をカウントする予定だったが、以下のエラーにより解決せず
+  //  react-dom.development.js:16317 Uncaught Error: Too many re-renders.
+  // React limits the number of renders to prevent an infinite loop.
+  //  at renderWithHooks (react-dom.development.js:16317:1)
 
   // winner playerのカウント
-  const [ scoreX, setScoreX ] = useState(0);
-  const [ scoreY, setScoreY ] = useState(0);
+  // const [ scoreX, setScoreX ] = useState(0);
+  // const [ scoreY, setScoreY ] = useState(0);
 
-  console.log("result --> " + result.substring(result.length-1));
-  console.log("result(substring無し) --> " + result);
-  // それぞれのwinnerのカウントしていく
+  // if(winner !== null){
+  //   if(win === "X"){
+  //     setScoreX(scoreX +1);
+  //   } else if(win == "O") {
+  //     setScoreY(scoreY + 1);
+  //   } else {
+  //     return;
+  //   }
+  // }
 
-  console.log("WINNER ====>>>> " + winner);
-
-  // player毎に表示を切り替える
-
-
+  
   return (
     <>
       <div className='scoreboard'>
         {result}
-        <div className='totalScore'>
+        {/* <div className='totalScore'>
           {`COUNT : X = ${scoreX} / O = ${scoreY}`}
-        </div>
+        </div> */}
       </div>
     </>
   )
