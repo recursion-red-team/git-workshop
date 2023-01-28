@@ -2,7 +2,7 @@ import React from "react";
 import Square from "./Square";
 import "./Board.css";
 
-const Board = ({ winnerLines, squares, onClick}) => {
+const Board = ({ itemLocation, winnerLines, squares, onClick}) => {
   /**
    * マス目を表示する
    * @param {int} index
@@ -17,9 +17,13 @@ const Board = ({ winnerLines, squares, onClick}) => {
       };
     }
 
+    let reverseValue = ""
+    if (index === itemLocation) reverseValue = "reverse"
+
     return (
       <Square
         winnerSquare={winnerSquare}
+        item={reverseValue}
         squareValue={squares[index]}
         onClick={() => onClick(index)}
       />

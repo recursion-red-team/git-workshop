@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState, EffectCallback, DependencyList } from 'react';
 import Board from "./Board";
 import "./Game.css";
 import { ScoreBoard } from "./ScoreBoard";
@@ -12,9 +12,34 @@ const Game = () => {
   const [xIsNext, setXIsNext] = useState(true);
   const [disabledClick, setDisabledClick] = useState(false);
   const [playCount, setPlayCount] = useState(0);
+  const [playerCount, setPlayerCount] = useState(0);
+  const randomLocation = Math.floor(Math.random() * 9);
+  const [reverseLocation, setReverseLocation] = useState(randomLocation);
+  const [reverseTiming, setReverseTiming] = useState(false);
+  const MAX_PLAY_COUNT = 9;
 
+// 初回の実行がスキップされるuseEffect
+function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
+  const didMountRef = useRef(false);
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+    } else {
+      fn();
+    }
+  }, deps);
+};
 
-  const MAX_PLAY_COUNT = 5;
+  const jumpTo = (step) => {
+    if (step === 0){
+      addHidden();
+      setReverseLocation(randomLocation);
+      setXIsNext(true);
+      console.log("randomLocation is " + reverseLocation)
+    };
+    setPlayCount(step);
+    setXIsNext(step % 2 === 0);
+  };
 
   const moves = history.map((step, move) => {
     const desc = move ? `Time Travel ${move}` : `Restart`;
@@ -24,12 +49,6 @@ const Game = () => {
     if (move === 0){
       restart = "restart";
     }else visibility = "hidden";
-
-    const jumpTo = (step) => {
-      if (step === 0){addHidden()};
-      setPlayCount(step);
-      setXIsNext(step % 2 === 0);
-    };
 
     return (
       <li key={move}
@@ -44,78 +63,127 @@ const Game = () => {
       </li>
     );
   });
-
+  
   /**
    * マス目クリック時
    * @param {int} index
    */
   const handleClick = (index) => {
-    setDisabledClick(true);
+    if (index === reverseLocation){
+      setReverseTiming(!reverseTiming)
+      playerClickAction(index);
+    } else {
+      playerClickAction(index);
+    }
+  };
+  
+  useDidUpdateEffect(() => {
+    reverseAction();
+  },[reverseTiming]);
 
+  useDidUpdateEffect(() => {
+    setTimeout(() => {
+      cpuAction();
+      setDisabledClick(false);
+    }, 1000);
+  },[playerCount]);
+  
+  const reverseAction = () => {
+    const historyCurrent = history.slice(0, playCount + 1);
+    const current = historyCurrent[historyCurrent.length - 1];
+    let squares = current.squares.slice();
+    
+    squares = squares.map((value) => {
+      if (value === null) {
+        return value
+      } else if (value === "X"){
+        return value = "O"
+      } else {
+        return "X"
+      }
+    });
+    setPlayCount(historyCurrent.length);
+    setHistory([...historyCurrent, { squares }]);
+    console.log("reversed!");
+  };
+  
+  const playerClickAction = (index) => {
+    console.log("playerAction");
+    setDisabledClick(true);
+    
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     const squares = current.squares.slice();
-
+    
     if (calculateWinner(squares) || squares[index]) {
       setDisabledClick(false);
       return;
     }
     squares[index] = xIsNext ? "X" : "O";
-
+    
     setPlayCount(historyCurrent.length);
+    console.log(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
     setXIsNext(!xIsNext);
-
-    setTimeout(() => {
-      cpuAction(squares);
-      setDisabledClick(false);
-    }, 1000);
+    setPlayerCount(playerCount +1);
   };
-
+  
   const board = document.getElementById("board");
   /**
    * 勝敗が決したのち、タイムトラベルボタンを表示
    * Restartするとタイムトラベルボタンを非表示
-   */
-  const removeHidden = () => {
-    board.classList.add('disabled');
-    const buttonList = document.getElementById("buttonList");
-    const children = buttonList.children;
-    for (let i = 0; i < children.length; i++){
-      children[i].classList.remove('hidden');
-      console.log(children[i]);
+  */
+ const removeHidden = () => {
+   board.classList.add('disabled');
+   const buttonList = document.getElementById("buttonList");
+   const children = buttonList.children;
+   for (let i = 0; i < children.length; i++){
+     children[i].classList.remove('hidden');
     };
   };
-
+  
   const addHidden = () => {
     board.classList.remove('disabled');
     const buttonList = document.getElementById("buttonList");
     const children = buttonList.children;
     for (let i = 0; i < children.length; i++){
       children[i].classList.add('hidden');
-      console.log(children[i]);
     };
   }
-
-  const cpuAction = (squares) => {
-    if (calculateWinner(squares)) return;
-    const currentHistory = history.slice(0, playCount + 1);
-
+  
+  const cpuAction = () => {
+    setDisabledClick(true);
+    console.log("CPUAction");
+    let historyCurrent = history.slice(0, playCount + 1);
+    let current = historyCurrent[historyCurrent.length - 1];
+    let squares = current.squares.slice();
+    
     const possible_hands = [];
     let hand = squares.indexOf(null);
     while (hand !== -1) {
       possible_hands.push(hand);
       hand = squares.indexOf(null, hand + 1);
     }
-
+    
     if (possible_hands.length === 0) return;
-
+    
     const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
-    const cpuStatus = !xIsNext;
-    squares[action_hand] = cpuStatus ? "X" : "O";
+    if (calculateWinner(squares) || squares[action_hand]) {
+      setDisabledClick(false);
+      return;
+    }
+    squares[action_hand] = xIsNext ? "X" : "O";
+    
+    setHistory([...historyCurrent, { squares }]);
+    setXIsNext(!xIsNext);
+    setPlayCount(historyCurrent.length);
+    if (action_hand === reverseLocation){
+      setReverseTiming(!reverseTiming);
+    };
+    
+    historyCurrent = history.slice(0, playCount + 1);
+    current = historyCurrent[historyCurrent.length - 1];
 
-    setHistory([...currentHistory, { squares }]);
-    setXIsNext(xIsNext);
   };
 
   /**
@@ -173,23 +241,22 @@ const Game = () => {
   };
 
   return (
+    <div className={"game " + (disabledClick ? "disabled" : "")}>
+        <ScoreBoard
+          result={result}
+        />
+          <div className="game-board" id="board">
+        <Board
+          winnerLines={winner}
+          squares={current.squares}
+          onClick={index => handleClick(index)}
+        />
 
-  <div className={"game " + (disabledClick ? "disabled" : "")}>
-      <ScoreBoard
-        result={result}
-      />
-        <div className="game-board" id="board">
-      <Board
-        winnerLines={winner}
-        squares={current.squares}
-        onClick={index => handleClick(index)}
-      />
-
+      </div>
+      <div className="game-info">
+          <ul id="buttonList" style={{ padding: 0 }}>{moves}</ul>
+      </div>
     </div>
-    <div className="game-info">
-        <ul id="buttonList" style={{ padding: 0 }}>{moves}</ul>
-    </div>
-  </div>
   );
 };
 

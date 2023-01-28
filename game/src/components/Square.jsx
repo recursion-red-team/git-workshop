@@ -1,11 +1,13 @@
 import React from "react";
 import "./Square.css";
 
-const Square = ({winnerSquare, squareValue, onClick}) => {
-	let square = "square " + winnerSquare;
+const Square = ({ item, winnerSquare, squareValue, onClick }) => {
+	console.log(winnerSquare);
+	let square = "square " + winnerSquare
 	return (
       <button
 				className={square}
+				id={item}
 				onClick={() => onClick()}
 				>
 				{squareValue}
