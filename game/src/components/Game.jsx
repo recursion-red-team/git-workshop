@@ -55,6 +55,7 @@ const Game = () => {
     const squares = current.squares.slice();
 
     if (calculateWinner(squares) || squares[index]) {
+      setDisabledClick(false);
       return;
     }
     squares[index] = xIsNext ? "X" : "O";
