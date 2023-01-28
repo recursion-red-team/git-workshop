@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, EffectCallback, DependencyList } from 'react';
 import Board from "./Board";
 import "./Game.css";
 
@@ -11,10 +11,26 @@ const Game = () => {
   const [xIsNext, setXIsNext] = useState(true);
   const [disabledClick, setDisabledClick] = useState(false);
   const [playCount, setPlayCount] = useState(0);
+  const [playerCount, setPlayerCount] = useState(0);
   const randomLocation = Math.floor(Math.random() * 9);
   const [reverseLocation, setReverseLocation] = useState(randomLocation);
   const [reverseTiming, setReverseTiming] = useState(false);
   const MAX_PLAY_COUNT = 5;
+
+
+
+// 初回の実行がスキップされるuseEffect
+function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
+  const didMountRef = useRef(false);
+
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+    } else {
+      fn();
+    }
+  }, deps);
+}
 
   const jumpTo = (step) => {
     if (step === 0){
@@ -63,9 +79,16 @@ const Game = () => {
     }
   };
   
-  useEffect(() => {
+  useDidUpdateEffect(() => {
     reverseAction();
   },[reverseTiming]);
+
+  useDidUpdateEffect(() => {
+    setTimeout(() => {
+      cpuAction();
+      setDisabledClick(false);
+    }, 1000);
+  },[playerCount]);
   
   const reverseAction = () => {
     console.log("reverseAction");
@@ -93,6 +116,7 @@ const Game = () => {
   const playerClickAction = (index) => {
     console.log("playerAction");
     setDisabledClick(true);
+    
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     const squares = current.squares.slice();
@@ -106,11 +130,8 @@ const Game = () => {
     setPlayCount(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
     setXIsNext(!xIsNext);
+    setPlayerCount(playerCount +1);
     
-    setTimeout(() => {
-      cpuAction(squares);
-      setDisabledClick(false);
-    }, 1000);
   };
   
   
@@ -124,7 +145,7 @@ const Game = () => {
    const buttonList = document.getElementById("buttonList");
    const children = buttonList.children;
    for (let i = 0; i < children.length; i++){
-      children[i].classList.remove('hidden');
+     children[i].classList.remove('hidden');
       console.log(children[i]);
     };
   };
@@ -139,9 +160,13 @@ const Game = () => {
     };
   }
   
-  const cpuAction = (squares) => {
-    if (calculateWinner(squares)) return;
-    const currentHistory = history.slice(0, playCount + 1);
+  const cpuAction = () => {
+    console.log("CPUAction");
+    const historyCurrent = history.slice(0, playCount + 1);
+    const current = historyCurrent[historyCurrent.length - 1];
+    const squares = current.squares.slice();
+    console.log(squares);
+
     
     const possible_hands = [];
     let hand = squares.indexOf(null);
@@ -149,15 +174,15 @@ const Game = () => {
       possible_hands.push(hand);
       hand = squares.indexOf(null, hand + 1);
     }
-
-    if (possible_hands.length === 0) return;
-
-    const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
-    const cpuStatus = !xIsNext;
-    squares[action_hand] = cpuStatus ? "X" : "O";
     
-    setHistory([...currentHistory, { squares }]);
-    setXIsNext(xIsNext);
+    if (possible_hands.length === 0) return;
+    
+    const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
+    if (calculateWinner(squares) || squares[action_hand]) return;
+    squares[action_hand] = xIsNext ? "X" : "O";
+    
+    setHistory([...historyCurrent, { squares }]);
+    setXIsNext(!xIsNext);
     if (action_hand === reverseLocation){
       setReverseTiming(!reverseTiming);
     };
