@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Board from "./Board";
 import "./Game.css";
 
@@ -13,8 +13,9 @@ const Game = () => {
   const [playCount, setPlayCount] = useState(0);
   const randomLocation = Math.floor(Math.random() * 9);
   const [reverseLocation, setReverseLocation] = useState(randomLocation);
+  const [reverseTiming, setReverseTiming] = useState(false);
   const MAX_PLAY_COUNT = 5;
-  
+
   const jumpTo = (step) => {
     if (step === 0){
       addHidden();
@@ -54,11 +55,38 @@ const Game = () => {
    */
   const handleClick = (index) => {
     if (index === reverseLocation){
+      setReverseTiming(!reverseTiming)
       playerClickAction(index);
-      reverse();
     } else {
       playerClickAction(index);
     }
+  };
+  
+  useEffect(() => {
+    reverseAction();
+  },[reverseTiming]);
+  
+  const reverseAction = () => {
+    console.log("reverseAction");
+    const historyCurrent = history.slice(0, playCount + 1);
+    const current = historyCurrent[historyCurrent.length - 1];
+    let squares = current.squares.slice();
+    
+    console.log(squares);
+    squares = squares.map((value) => {
+      if (value === null) {
+        return value
+      } else if (value === "X"){
+        return value = "O"
+      } else {
+        return "X"
+      }
+    });
+    setPlayCount(historyCurrent.length);
+    console.log(playCount);
+    setHistory([...historyCurrent, { squares }]);
+    console.log("reversed!");
+    console.log(squares);
   };
   
   const playerClickAction = (index) => {
@@ -84,28 +112,6 @@ const Game = () => {
     }, 1000);
   };
   
-  const reverse = () => {
-    console.log("reverseAction");
-    const historyCurrent = history.slice(0, playCount + 1);
-    const current = historyCurrent[historyCurrent.length - 1];
-    let squares = current.squares.slice();
-    
-    console.log(squares);
-    squares = squares.map((value) => {
-      if (value === null) {
-        return value
-      } else if (value === "X"){
-        return value = "O"
-      } else {
-        return "X"
-      }
-    });
-    setPlayCount(historyCurrent.length);
-    console.log(playCount);
-    setHistory([...historyCurrent, { squares }]);
-    console.log("reversed!");
-    console.log(squares);
-  };  
   
   const board = document.getElementById("board");
   /**
@@ -152,7 +158,7 @@ const Game = () => {
     setHistory([...currentHistory, { squares }]);
     setXIsNext(xIsNext);
     if (action_hand === reverseLocation){
-      reverse();
+      setReverseTiming(!reverseTiming);
     };
   };
 
