@@ -15,7 +15,7 @@ const Game = () => {
   const randomLocation = Math.floor(Math.random() * 9);
   const [reverseLocation, setReverseLocation] = useState(randomLocation);
   const [reverseTiming, setReverseTiming] = useState(false);
-  const MAX_PLAY_COUNT = 5;
+  const MAX_PLAY_COUNT = 9;
 
 
 
@@ -88,6 +88,8 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
       cpuAction();
       setDisabledClick(false);
     }, 1000);
+    
+
   },[playerCount]);
   
   const reverseAction = () => {
@@ -161,6 +163,7 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
   }
   
   const cpuAction = () => {
+    setDisabledClick(true);
     console.log("CPUAction");
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
