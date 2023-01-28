@@ -53,7 +53,7 @@
 #buttonList li button{
   color: rgb(1, 1, 1);
   background-color: #ffffff;
-  padding: 3px;
+  padding: 6px;
   border: 2px solid black;
   border-radius: 20px;
 }
