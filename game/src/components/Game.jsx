@@ -63,7 +63,7 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
       </li>
     );
   });
-  
+
   /**
    * マス目クリック時
    * @param {int} index
@@ -76,7 +76,7 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
       playerClickAction(index);
     }
   };
-  
+
   useDidUpdateEffect(() => {
     reverseAction();
   },[reverseTiming]);
@@ -87,12 +87,12 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
       setDisabledClick(false);
     }, 1000);
   },[playerCount]);
-  
+
   const reverseAction = () => {
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     let squares = current.squares.slice();
-    
+
     squares = squares.map((value) => {
       if (value === null) {
         return value
@@ -105,29 +105,30 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
     setPlayCount(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
     console.log("reversed!");
+    window.alert("リバース！相手と自分のマスが入れ替わります。(実装未完了です)");
   };
-  
+
   const playerClickAction = (index) => {
     console.log("playerAction");
     setDisabledClick(true);
-    
+
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     const squares = current.squares.slice();
-    
+
     if (calculateWinner(squares) || squares[index]) {
       setDisabledClick(false);
       return;
     }
     squares[index] = xIsNext ? "X" : "O";
-    
+
     setPlayCount(historyCurrent.length);
     console.log(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
     setXIsNext(!xIsNext);
     setPlayerCount(playerCount +1);
   };
-  
+
   const board = document.getElementById("board");
   /**
    * 勝敗が決したのち、タイムトラベルボタンを表示
@@ -141,7 +142,7 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
      children[i].classList.remove('hidden');
     };
   };
-  
+
   const addHidden = () => {
     board.classList.remove('disabled');
     const buttonList = document.getElementById("buttonList");
@@ -150,37 +151,37 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
       children[i].classList.add('hidden');
     };
   }
-  
+
   const cpuAction = () => {
     setDisabledClick(true);
     console.log("CPUAction");
     let historyCurrent = history.slice(0, playCount + 1);
     let current = historyCurrent[historyCurrent.length - 1];
     let squares = current.squares.slice();
-    
+
     const possible_hands = [];
     let hand = squares.indexOf(null);
     while (hand !== -1) {
       possible_hands.push(hand);
       hand = squares.indexOf(null, hand + 1);
     }
-    
+
     if (possible_hands.length === 0) return;
-    
+
     const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
     if (calculateWinner(squares) || squares[action_hand]) {
       setDisabledClick(false);
       return;
     }
     squares[action_hand] = xIsNext ? "X" : "O";
-    
+
     setHistory([...historyCurrent, { squares }]);
     setXIsNext(!xIsNext);
     setPlayCount(historyCurrent.length);
     if (action_hand === reverseLocation){
       setReverseTiming(!reverseTiming);
     };
-    
+
     historyCurrent = history.slice(0, playCount + 1);
     current = historyCurrent[historyCurrent.length - 1];
 
