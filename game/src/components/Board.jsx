@@ -56,6 +56,7 @@ const Board = ({ winnerLines, squares, onClick}) => {
         <div className="item">
           {renderSquare(8)}
         </div>
+
       </div>
     </>
   );
