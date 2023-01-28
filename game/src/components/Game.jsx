@@ -22,7 +22,6 @@ const Game = () => {
 // 初回の実行がスキップされるuseEffect
 function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
   const didMountRef = useRef(false);
-
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
@@ -30,7 +29,7 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
       fn();
     }
   }, deps);
-}
+};
 
   const jumpTo = (step) => {
     if (step === 0){
@@ -88,17 +87,13 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
       cpuAction();
       setDisabledClick(false);
     }, 1000);
-    
-
   },[playerCount]);
   
   const reverseAction = () => {
-    console.log("reverseAction");
     const historyCurrent = history.slice(0, playCount + 1);
     const current = historyCurrent[historyCurrent.length - 1];
     let squares = current.squares.slice();
     
-    console.log(squares);
     squares = squares.map((value) => {
       if (value === null) {
         return value
@@ -109,10 +104,8 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
       }
     });
     setPlayCount(historyCurrent.length);
-    console.log(playCount);
     setHistory([...historyCurrent, { squares }]);
     console.log("reversed!");
-    console.log(squares);
   };
   
   const playerClickAction = (index) => {
@@ -130,12 +123,12 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
     squares[index] = xIsNext ? "X" : "O";
     
     setPlayCount(historyCurrent.length);
+    console.log(historyCurrent.length);
     setHistory([...historyCurrent, { squares }]);
     setXIsNext(!xIsNext);
     setPlayerCount(playerCount +1);
     
   };
-  
   
   const board = document.getElementById("board");
   /**
@@ -148,7 +141,6 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
    const children = buttonList.children;
    for (let i = 0; i < children.length; i++){
      children[i].classList.remove('hidden');
-      console.log(children[i]);
     };
   };
   
@@ -158,18 +150,15 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
     const children = buttonList.children;
     for (let i = 0; i < children.length; i++){
       children[i].classList.add('hidden');
-      console.log(children[i]);
     };
   }
   
   const cpuAction = () => {
     setDisabledClick(true);
     console.log("CPUAction");
-    const historyCurrent = history.slice(0, playCount + 1);
-    const current = historyCurrent[historyCurrent.length - 1];
-    const squares = current.squares.slice();
-    console.log(squares);
-
+    let historyCurrent = history.slice(0, playCount + 1);
+    let current = historyCurrent[historyCurrent.length - 1];
+    let squares = current.squares.slice();
     
     const possible_hands = [];
     let hand = squares.indexOf(null);
@@ -181,14 +170,22 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
     if (possible_hands.length === 0) return;
     
     const action_hand = possible_hands[Math.floor(Math.random() * possible_hands.length)];
-    if (calculateWinner(squares) || squares[action_hand]) return;
+    if (calculateWinner(squares) || squares[action_hand]) {
+      setDisabledClick(false);
+      return;
+    }
     squares[action_hand] = xIsNext ? "X" : "O";
     
     setHistory([...historyCurrent, { squares }]);
     setXIsNext(!xIsNext);
+    setPlayCount(historyCurrent.length);
     if (action_hand === reverseLocation){
       setReverseTiming(!reverseTiming);
     };
+    
+    historyCurrent = history.slice(0, playCount + 1);
+    current = historyCurrent[historyCurrent.length - 1];
+
   };
 
   /**
@@ -246,13 +243,13 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
 
   return (
 
-<div className={"game " + (disabledClick ? "disabled" : "")}>
+    <div className={"game " + (disabledClick ? "disabled" : "")}>
       <div className="game-board" id="board">
         <div className="display">{result}</div>
         <Board
           winnerLines={winner}
           itemLocation={reverseLocation}
-          squares={current.squares}
+          squares={history[playCount].squares}
           onClick={index => handleClick(index)}
         />
       </div>
