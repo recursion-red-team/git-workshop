@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, EffectCallback, DependencyList } from 'react';
 import Board from "./Board";
 import "./Game.css";
+import { ScoreBoard } from "./ScoreBoard";
 
 const Game = () => {
   const [history, setHistory] = useState([
@@ -16,8 +17,6 @@ const Game = () => {
   const [reverseLocation, setReverseLocation] = useState(randomLocation);
   const [reverseTiming, setReverseTiming] = useState(false);
   const MAX_PLAY_COUNT = 9;
-
-
 
 // 初回の実行がスキップされるuseEffect
 function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
@@ -43,7 +42,7 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
   };
 
   const moves = history.map((step, move) => {
-    const desc = move ? `Go to move # ${move}` : `Restart`;
+    const desc = move ? `Time Travel ${move}` : `Restart`;
     let visibility = "";
     let restart = "";
 
@@ -127,7 +126,6 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
     setHistory([...historyCurrent, { squares }]);
     setXIsNext(!xIsNext);
     setPlayerCount(playerCount +1);
-    
   };
   
   const board = document.getElementById("board");
@@ -219,42 +217,44 @@ function useDidUpdateEffect(fn: EffectCallback, deps: DependencyList) {
        ) {
          return [a, b ,c];
         }
-    }
-    return null;
-  };
+      }
+      return null;
+    };
+
 
   /**
    * 勝者/次のプレイヤーを表示
    * @returns {string}
    */
   const winner = calculateWinner(current.squares)
-  console.log(winner);
   let result = "";
   if (winner) {
     removeHidden();
-    const winnerStatus = current.squares[winner[0]]
-    result = "勝者: " + winnerStatus;
+    result = "Winner: " + current.squares[winner[0]];
+    console.log("winner内のTRUEなら、resultのチェック ====>>>> " + result)
   } else if (playCount === MAX_PLAY_COUNT) {
     removeHidden();
-    result = "引き分けです";
+    result = "DRAW";
   } else {
-    result = "次のプレイヤー: " + (xIsNext ? "X" : "O");
+    console.log("X IS NEXT : " + xIsNext)
+    result = "NEXT PLAYER: " + (xIsNext ? "X" : "O");
   };
 
   return (
-
     <div className={"game " + (disabledClick ? "disabled" : "")}>
-      <div className="game-board" id="board">
-        <div className="display">{result}</div>
+        <ScoreBoard
+          result={result}
+        />
+          <div className="game-board" id="board">
         <Board
           winnerLines={winner}
-          itemLocation={reverseLocation}
-          squares={history[playCount].squares}
+          squares={current.squares}
           onClick={index => handleClick(index)}
         />
+
       </div>
       <div className="game-info">
-          <ul id="buttonList">{moves}</ul>
+          <ul id="buttonList" style={{ padding: 0 }}>{moves}</ul>
       </div>
     </div>
   );
