@@ -4,8 +4,7 @@ import "./ScoreBoard.css";
 
 export const ScoreBoard = ({ result }) => {
 
-
-  // Gameコンポーネントからpropsでwinneを引数として受け取り、r勝者をカウントする予定だったが、以下のエラーにより解決せず
+  // Gameコンポーネントからpropsでwinneを引数として受け取り、勝者をカウントする予定だったが、以下のエラーにより解決せず
   //  react-dom.development.js:16317 Uncaught Error: Too many re-renders.
   // React limits the number of renders to prevent an infinite loop.
   //  at renderWithHooks (react-dom.development.js:16317:1)
@@ -24,7 +23,7 @@ export const ScoreBoard = ({ result }) => {
   //   }
   // }
 
-  
+
   return (
     <>
       <div className='scoreboard'>
